@@ -1,0 +1,42 @@
+{
+  "assignments": [
+    {
+      "id": 101,
+      "title": "Java Program 2",
+      "description": "<p>Create a menu-driven Java program using loops, methods, and arrays.</p>",
+      "created_at": "2026-09-18T10:00:00Z",
+      "updated_at": "2026-09-18T10:00:00Z",
+      "dueDate": "2026-09-24T23:59:00Z",
+      "lock_at": null,
+      "unlock_at": null,
+      "has_overrides": false,
+      "courseName": 1001,
+      "html_url": "https://canvas.example.com/courses/1001/assignments/101",
+      "points_possible": 100,
+      "submission_types": [
+        "online_upload"
+      ],
+      "grading_type": "points",
+      "workflow_state": "published"
+    },
+    {
+      "id": 102,
+      "title": "Biology Quiz 3",
+      "description": "<p>Quiz covering carbohydrates, lipids, and proteins.</p>",
+      "created_at": "2026-09-18T10:00:00Z",
+      "updated_at": "2026-09-18T10:00:00Z",
+      "dueDate": "2026-09-22T14:00:00Z",
+      "lock_at": null,
+      "unlock_at": null,
+      "has_overrides": false,
+      "courseName": 1002,
+      "html_url": "https://canvas.example.com/courses/1002/assignments/102",
+      "points_possible": 50,
+      "submission_types": [
+        "online_quiz"
+      ],
+      "grading_type": "points",
+      "workflow_state": "published"
+    }
+  ]
+}
