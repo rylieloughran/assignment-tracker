@@ -8,7 +8,7 @@ const sortBySelect = document.getElementById('sort-by');
 
 document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
-    renderAssignments();
+    loadAssignments();
 });
 
 function setupEventListeners() {
@@ -29,27 +29,54 @@ function setupEventListeners() {
     }
 }
 
-function handleAddAssignment(e) {
+async function handleAddAssignment(e) {
     e.preventDefault();
+
     const title = document.getElementById('assignment-title').value.trim();
     const courseName = document.getElementById('course-name').value.trim();
     const dueDate = document.getElementById('due-date').value;
-    const assignmentUrgency = parseInt(document.getElementById('assignment-urgency').value, 10);
-    const estimatedTime = parseInt(document.getElementById('estimated-time').value, 10) || 0;
+    const assignmentUrgency = parseInt(
+        document.getElementById('assignment-urgency').value,
+        10
+    );
+    const estimatedTime = parseInt(
+        document.getElementById('estimated-time').value,
+        10
+    ) || 0;
 
     const newAssignment = {
-        id: Date.now(),
-        title,
-        courseName,
-        dueDate,
-        assignmentUrgency,
-        estimatedTime,
-        subtasks: []
-    };
+    title: title,
+    courseName: courseName,
+    dueDate: dueDate,
+    assignmentUrgency: assignmentUrgency,
+    estimatedTime: estimatedTime
+};
 
-    assignments.push(newAssignment);
-    assignmentForm.reset();
-    renderAssignments();
+    try {
+        const response = await fetch('http://localhost:8080/api/assignments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newAssignment)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to create assignment');
+        }
+
+        const savedAssignment = await response.json();
+
+        console.log('Assignment saved:', savedAssignment);
+
+        assignmentForm.reset();
+
+        await loadAssignments();
+
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Could not save assignment.');
+    }
 }
 
 function getDisplayDate(dateString) {
@@ -100,8 +127,9 @@ function renderAssignments() {
     const urgencyLabels = { 1: 'Critical', 2: 'High', 3: 'Medium', 4: 'Low'};
     assignmentsContainer.innerHTML = list.map(item => {
         const displayDueDate = getDisplayDate(item.dueDate);
-        const completedSubtasks = item.subtasks.filter(s => s.completed).length;
-        const totalSubtasks = item.subtasks.length;
+        const subtasks = item.subtasks || [];
+const completedSubtasks = subtasks.filter(s => s.completed).length;
+const totalSubtasks = subtasks.length;
         const progressPercent = totalSubtasks > 0 ? Math.round((completedSubtasks/totalSubtasks) * 100) : 0;
 
         return `
@@ -126,9 +154,9 @@ function renderAssignments() {
 
             <!-- Subtasks Section -->
             <div>
-                ${item.subtasks.length > 0 ? `
+                ${subtasks.length > 0 ? `
                     <ul style="list-style: none; padding-left: 0;">
-                        ${item.subtasks.map((sub, index) => `
+                        ${subtasks.map((sub, index) => `
                             <li>
                                 <label>
                                     <input type="checkbox" ${sub.completed ? 'checked' : ''} 
@@ -170,6 +198,23 @@ function handleAddSubtask(e, assignmentId) {
     if(assignment) {
         assignment.subtasks.push({text, estimatedTime, completed: false});
         renderAssignments();
+    }
+}
+
+async function loadAssignments() {
+    try {
+        const response = await fetch('http://localhost:8080/api/assignments');
+
+        if (!response.ok) {
+            throw new Error('Failed to load assignments');
+        }
+
+        assignments = await response.json();
+
+        renderAssignments();
+
+    } catch (error) {
+        console.error('Error loading assignments:', error);
     }
 }
 

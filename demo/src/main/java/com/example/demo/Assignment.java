@@ -1,50 +1,72 @@
 package com.example.demo;
+
 public class Assignment {
 
-    private String name;
-    private String course;
+    private String title;
+    private String courseName;
     private String dueDate;
-    private boolean isCompleted;
-    private int urgency;
+    private boolean completed;
+    private int assignmentUrgency;
     private int estimatedTime;
 
     public Assignment() {
     }
 
-    public Assignment(String name, String course, String dueDate, int urgency, int estimatedTime) {
-        this.name = name;
-        this.course = course;
+    public Assignment(String title, String courseName, String dueDate,
+                      int assignmentUrgency, int estimatedTime) {
+        this.title = title;
+        this.courseName = courseName;
         this.dueDate = dueDate;
-        this.isCompleted = false;
-        this.urgency = urgency;
+        this.completed = false;
+        this.assignmentUrgency = assignmentUrgency;
         this.estimatedTime = estimatedTime;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public String getCourse() {
-        return course;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public String getDueDate() {
         return dueDate;
     }
 
-    public boolean isCompleted() {
-        return isCompleted;
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
     }
 
-    public int getUrgency() {
-        return urgency;
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public int getAssignmentUrgency() {
+        return assignmentUrgency;
+    }
+
+    public void setAssignmentUrgency(int assignmentUrgency) {
+        this.assignmentUrgency = assignmentUrgency;
     }
 
     public int getEstimatedTime() {
         return estimatedTime;
     }
 
-    public void setCompleted(boolean completed) {
-        isCompleted = completed;
+    public void setEstimatedTime(int estimatedTime) {
+        this.estimatedTime = estimatedTime;
     }
 }
