@@ -1,15 +1,22 @@
 package com.example.demo;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class Assignment {
 
+    private String id;
     private String title;
     private String courseName;
     private String dueDate;
     private boolean completed;
     private int assignmentUrgency;
     private int estimatedTime;
+    private List<Subtask> subtasks = new ArrayList<>();
 
     public Assignment() {
+        this.id = UUID.randomUUID().toString();
     }
 
     public Assignment(String title, String courseName, String dueDate,
@@ -20,6 +27,14 @@ public class Assignment {
         this.completed = false;
         this.assignmentUrgency = assignmentUrgency;
         this.estimatedTime = estimatedTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -68,5 +83,13 @@ public class Assignment {
 
     public void setEstimatedTime(int estimatedTime) {
         this.estimatedTime = estimatedTime;
+    }
+
+    public List<Subtask> getSubtasks() {
+        return subtasks;
+    }
+
+    public void setSubtasks(List<Subtask> subtasks) {
+        this.subtasks = subtasks;
     }
 }

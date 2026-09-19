@@ -240,6 +240,18 @@ async function loadAssignments() {
     }
 }
 
+async function saveAssignmentToBackend(assignment) {
+  try {
+    await fetch(`http://localhost:8080/api/assignments/${assignment.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(assignment)
+    });
+  } catch (error) {
+    console.error('Error updating assignment:', error);
+  }
+}
+
 function escapeHtml(str) {
   return str.replace(/[&<>"']/g, (m) => ({
     '&': '&amp;',
