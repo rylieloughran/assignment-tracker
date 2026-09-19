@@ -1,1 +1,36 @@
 <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset = "UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Assignment Tracker</title>
+    </head>
+    <body>
+        <header>
+            <h1> Assignment Tracker </h1>
+            <div id="procrastination banner">
+                <label for="procrastination-toggle">
+                    <input type="checkbox" id="procrastination-toggle">
+                    <strong>Counter-Procrastination Mode</strong>
+                </label>
+            </div>
+        </header>
+
+        <main>
+            <section>
+                <h2>Add New Assignment</h2>
+                <form id="assignment-form">
+                    <div>
+                        <label for="assignment-title">Assignment Title</label>
+                        <input type="text" id="assignment-title" name="assignment-title" placeholder="e.g., Research Paper" required>
+                    </div>
+
+                    <div>
+                        <label for="course-name"> Course / Name</label>
+                        <input type="text" id="course-name" name="course-name" placeholder="e.g., CS 001" required>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </body>
+</html>
