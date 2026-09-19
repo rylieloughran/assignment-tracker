@@ -53,6 +53,26 @@
                     <button type="submit">Create Assignment</button>
                 </form>
             </section>
+
+            <section>
+                <h2>Filter and Sort</h2>
+                <div>
+                    <label for="sort-by">Sort Assignments By:</label>
+                    <select id="sort-by">
+                        <option value="due-date-asc">Due Date (Soonest First)</option>
+                        <option value="assignment-urgency-asc">Urgency (Highest First)</option>
+                        <option value="estimated-time-asc">Estimated Time (Shortest First)</option>
+                        <option value="estimated-time-desc">Estiamted Time (Longest First)</option>
+                    </select>
+                </div>
+            </section>
+
+            <section>
+                <h2>Your Assignments</h2>
+                <div id="assignments-container">
+                    
+                </div>
+            </section>
         </main>
     </body>
 </html>
