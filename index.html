@@ -8,7 +8,7 @@
     <body>
         <header>
             <h1> Assignment Tracker </h1>
-            <div id="procrastination banner">
+            <div id="procrastination-banner">
                 <label for="procrastination-toggle">
                     <input type="checkbox" id="procrastination-toggle">
                     <strong>Counter-Procrastination Mode</strong>
@@ -70,31 +70,10 @@
             <section>
                 <h2>Your Assignments</h2>
                 <div id="assignments-container">
-                    <article class = "assignment-card">
-                        <header>
-                            <h3>Research Paper</h3>
-                            <p><strong>Course:</strong> CS 001 | <strong>Urgency:</strong> High</p>
-                            <p><strong>Due Date:</strong> <span class="due-date-display">2026-10-15</span></p>
-                            <p><strong>Est. Time Total:</strong> 5.0 hours</p>
-                        </header>
-
-                        <!-- Progress Bar -->
-                        <div>
-                            <label for="progress-1">Overall Progress:</label>
-                            <progress id="progress-1" value="2" max="4"></progress>
-                            <span>50%</span>
-                        </div>
-
-                        <div>
-                            <form class="add-subtask-form">
-                            <input type="text" placeholder="New small task..." required>
-                            <input type="number" placeholder="Estimated Minutes" min="5" step="5">
-                            <button type="submit">Add Subtask</button>
-                            </form>
-                        </div>
-                    </article>
+                    
                 </div>
             </section>
         </main>
+        <script src="app.js"></script>
     </body>
 </html>
