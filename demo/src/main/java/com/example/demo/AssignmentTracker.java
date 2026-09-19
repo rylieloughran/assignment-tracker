@@ -1,3 +1,4 @@
+package com.example.demo;
 import java.util.ArrayList;
 
 public class AssignmentTracker {
@@ -10,4 +11,13 @@ public class AssignmentTracker {
     public void addAssignment(Assignment assignment) {
         assignments.add(assignment);
     }
+
+    public void removeAssignment(Assignment assignment) {
+        assignments.remove(assignment);
+    }
+
+    public Assignment getAssignment(int index) {
+        return assignments.get(index);
+    }
+
 }
