@@ -1,0 +1,24 @@
+{
+  "name": "assignment-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rylieloughran/assignment-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/rylieloughran/assignment-tracker/issues"
+  },
+  "homepage": "https://github.com/rylieloughran/assignment-tracker#readme"
+}
