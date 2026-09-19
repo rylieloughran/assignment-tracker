@@ -49,7 +49,8 @@ async function handleAddAssignment(e) {
     courseName: courseName,
     dueDate: dueDate,
     assignmentUrgency: assignmentUrgency,
-    estimatedTime: estimatedTime
+    estimatedTime: estimatedTime,
+    subtasks: []
 };
 
     try {
@@ -128,60 +129,77 @@ function renderAssignments() {
     assignmentsContainer.innerHTML = list.map(item => {
         const displayDueDate = getDisplayDate(item.dueDate);
         const subtasks = item.subtasks || [];
-const completedSubtasks = subtasks.filter(s => s.completed).length;
-const totalSubtasks = subtasks.length;
+        const completedSubtasks = subtasks.filter(s => s.completed).length;
+        const totalSubtasks = subtasks.length;
         const progressPercent = totalSubtasks > 0 ? Math.round((completedSubtasks/totalSubtasks) * 100) : 0;
 
         return `
-        <article class="assignment-card" data-id="${item.id}">
-            <header>
-                <h3>${escapeHtml(item.title)}</h3>
-                <p><strong>Course:</strong> ${escapeHtml(item.courseName)} | <strong>Urgency:</strong> ${urgencyLabels[item.assignmentUrgency]}</p>
-                <p>
-                    <strong>Due Date:</strong> 
-                    <span class="due-date-display">${displayDueDate}</span>
-                    ${counterProcrastinationMode ? '<em>(Shifted 1 day earlier)</em>' : ''}
-                </p>
-                <p><strong>Est. Time Total:</strong> ${item.estimatedTime} mins</p>
-            </header>
+<article class="bg-white/80 backdrop-blur border border-sky-200/80 rounded-xl p-5 shadow-sm space-y-4" data-id="${item.id}">
+    <header class="space-y-1">
+        <div class="flex justify-between items-start gap-2">
+            <h3 class="text-base font-bold text-slate-800 tracking-wide">${escapeHtml(item.title)}</h3>
+            <span class="shrink-0 text-xs font-semibold px-3.5 py-1.5 border rounded-lg">
+                ${urgencyLabels[item.assignmentUrgency]}
+            </span>
+        </div>
+        
+        <div class="text-xs text-slate-600">
+            <span class="inline-block mr-6"><strong class="font-semibold text-slate-700">Course:</strong> ${escapeHtml(item.courseName)}</span>
+            <span class="inline-block mr-6"><strong class="font-semibold text-slate-700">Due Date:</strong> <span class="due-date-display text-slate-800 font-medium">${displayDueDate}</span> ${counterProcrastinationMode ? '<em class="text-rose-500 ml-1">(Shifted 1 day earlier)</em>' : ''}</span>
+            <span class="inline-block"><strong class="font-semibold text-slate-700">Est. Time Total:</strong> ${item.estimatedTime} mins</span>
+        </div>
+    </header>
 
-            <!-- Progress Bar -->
-            <div>
-                <label for="progress-${item.id}">Overall Progress:</label>
-                <progress id="progress-${item.id}" value="${completedSubtasks}" max="${totalSubtasks || 1}"></progress>
-                <span>${progressPercent}%</span>
-            </div>
+    <!-- Custom Styled Progress Bar -->
+    <div class="space-y-1.5">
+        <div class="flex justify-between text-xs text-slate-700 font-semibold">
+            <span>Overall Progress</span>
+            <span>${progressPercent}%</span>
+        </div>
+        <div class="w-full bg-sky-100 rounded-full h-2.5 overflow-hidden border border-sky-200">
+            <div class="bg-sky-400 h-2.5 rounded-full transition-all duration-300" style="width: ${progressPercent}%"></div>
+        </div>
+    </div>
 
-            <!-- Subtasks Section -->
-            <div>
-                ${subtasks.length > 0 ? `
-                    <ul style="list-style: none; padding-left: 0;">
-                        ${subtasks.map((sub, index) => `
-                            <li>
-                                <label>
-                                    <input type="checkbox" ${sub.completed ? 'checked' : ''} 
-                                        onchange="toggleSubtask(${item.id}, ${index})">
-                                     ${escapeHtml(sub.text)} (${sub.estTime} mins)
-                                </label>
-                            </li>
+    <!-- Subtasks Section -->
+    <div class="space-y-3 pt-2 border-t border-sky-100">
+        ${subtasks.length > 0 ? `
+            <ul class="space-y-1.5">
+                ${subtasks.map((sub, index) => `
+                    <li class="flex items-center gap-2 text-xs text-slate-700">
+                        <label class="flex items-center gap-2 cursor-pointer select-none">
+                            <input type="checkbox" ${sub.completed ? 'checked' : ''} 
+                                onchange="toggleSubtask('${item.id}', ${index})"
+                                class="rounded accent-sky-500 cursor-pointer">
+                            <span class="${sub.completed ? 'line-through text-slate-400' : 'text-slate-800'}">
+                                ${escapeHtml(sub.text)} (${sub.estTime} mins)
+                            </span>
+                        </label>
+                    </li>
                 `).join('')}
             </ul>
-            ` : ''}
+        ` : ''}
 
-                <form class="add-subtask-form" onsubmit="handleAddSubtask(event, ${item.id})">
-                    <input type="text" name="subtaskText" placeholder="New small task..." required>
-                    <input type="number" name="subtaskEst" placeholder="Estimated Minutes" min="5" step="5" required>
-                    <button type="submit">Add Subtask</button>
-                </form>
-            </div>
-        </article>
-    `;
+        <!-- Subtask Add Form -->
+        <form class="flex flex-col sm:flex-row gap-2" onsubmit="handleAddSubtask(event, '${item.id}')">
+            <input type="text" name="subtaskText" placeholder="New small task..." required
+                class="flex-1 bg-sky-50/50 border border-sky-200 rounded-lg px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-300">
+            <input type="number" name="subtaskEst" placeholder="Est. Mins" min="5" step="5" required
+                class="w-full sm:w-28 bg-sky-50/50 border border-sky-200 rounded-lg px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-300">
+            <button type="submit" 
+                class="bg-sky-200 hover:bg-sky-300 text-slate-900 font-semibold px-3 py-1.5 rounded-lg text-xs transition cursor-pointer">
+                Add Subtask
+            </button>
+        </form>
+    </div>
+</article>
+`;
 
     }).join('');
 }
 
 function toggleSubtask(assignmentId, subtaskIndex) {
-    const assignment = assignments.find(a => a.id === assignmentId);
+    const assignment = assignments.find(a => String(a.id) === String(assignmentId));
     if (assignment && assignment.subtasks[subtaskIndex]) {
         assignment.subtasks[subtaskIndex].completed = !assignment.subtasks[subtaskIndex].completed;
         renderAssignments();
@@ -192,11 +210,15 @@ function handleAddSubtask(e, assignmentId) {
     e.preventDefault();
     const form = e.target;
     const text = form.subtaskText.value.trim();
-    const estimatedTime = parseInt(form.subtaskEst.value, 10) || 0;
+    const estTime = parseInt(form.subtaskEst.value, 10) || 0;
 
-    const assignment = assignments.find(a => a.id === assignmentId);
+    const assignment = assignments.find(a => String(a.id) === String(assignmentId));
+
     if(assignment) {
-        assignment.subtasks.push({text, estimatedTime, completed: false});
+        if(!assignment.subtasks) {
+            assignment.subtasks = [];
+        }
+        assignment.subtasks.push({text, estTime, completed: false});
         renderAssignments();
     }
 }
