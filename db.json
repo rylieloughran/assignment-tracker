@@ -1,45 +1,6 @@
 {
   "assignments": [
-    {
-      "id": "101",
-      "title": "Java Program 2",
-      "courseName": "1001",
-      "dueDate": "2026-09-18",
-      "completed": false,
-      "urgency": "3",
-      "estimatedTime": 120,
-      "subtasks": []
-    },
-    {
-      "id": "102",
-      "title": "Biology Quiz 3",
-      "courseName": "1002",
-      "dueDate": "2026-09-18",
-      "completed": false,
-      "urgency": "1",
-      "estimatedTime": 60,
-      "subtasks": []
-    },
-    {
-      "id": "7-8Ps0ne_j0",
-      "title": "research paper",
-      "courseName": "rs 1001",
-      "dueDate": "2026-09-30",
-      "completed": false,
-      "urgency": "1",
-      "estimatedTime": 120,
-      "subtasks": []
-    },
-    {
-      "id": "mD2YYaHrvbs",
-      "title": "research paper",
-      "courseName": "rs 1001",
-      "dueDate": "2026-09-30",
-      "completed": false,
-      "urgency": 1,
-      "estimatedTime": 120,
-      "subtasks": []
-    }
+    
   ],
   "$schema": "./node_modules/json-server/schema.json"
 }
