@@ -1,55 +1,82 @@
 package com.example.demo;
 
-import java.util.ArrayList;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @RestController
-@RequestMapping("/api/assignments")
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*")
 public class AssignmentController {
 
-    private List<Assignment> assignments = new ArrayList<>();
+    @GetMapping("/api/assignments")
+    public List<AssignmentInput> getAssignments() throws Exception {
 
-    @GetMapping
-    public List<Assignment> getAssignments() {
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:3000/assignments"))
+                .GET()
+                .build();
+
+        HttpResponse<String> response =
+                client.send(
+                        request,
+                        HttpResponse.BodyHandlers.ofString()
+                );
+
+        String json = response.body();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        List<AssignmentInput> assignments = mapper.readValue(
+                json,
+                new TypeReference<List<AssignmentInput>>() {}
+        );
+
         return assignments;
     }
 
-    @PostMapping
-    public Assignment addAssignment(@RequestBody Assignment assignment) {
-        if (assignment.getId() == null || assignment.getId().isEmpty()) {
-            assignment.setId(java.util.UUID.randomUUID().toString());
-        }
-        assignments.add(assignment);
-        return assignment;
-    }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Assignment> updateAssignment(@PathVariable String id, @RequestBody Assignment updated) {
-        for (int i = 0; i < assignments.size(); i++) {
-            if (assignments.get(i).getId().equals(id)) {
-                updated.setId(id);
-                assignments.set(i, updated);
-                return ResponseEntity.ok(updated);
-            }
-        }
-        return ResponseEntity.notFound().build();
-    }
+    @PostMapping("/api/assignments")
+    public Assignment createAssignment(
+            @RequestBody Assignment assignment) throws Exception {
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAssignment(@PathVariable String id) {
-        boolean removed = assignments.removeIf(a -> a.getId().equals(id));
-        return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        HttpClient client = HttpClient.newHttpClient();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        // Convert the Assignment object into JSON
+        String json = mapper.writeValueAsString(assignment);
+
+        // Send the JSON to JSON Server
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:3000/assignments"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        // Send the request
+        HttpResponse<String> response =
+                client.send(
+                        request,
+                        HttpResponse.BodyHandlers.ofString()
+                );
+
+        // Convert JSON Server's response back into an Assignment
+        return mapper.readValue(
+                response.body(),
+                Assignment.class
+        );
     }
 }

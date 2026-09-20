@@ -11,8 +11,11 @@ public class Assignment {
     private String courseName;
     private String dueDate;
     private boolean completed;
-    private int assignmentUrgency;
-    private int estimatedTime;
+    
+    // Set to Integer wrapper class for clean numeric sorting (1, 2, 3, 4)
+    private Integer urgency; 
+    private Integer estimatedTime;
+    
     private List<Subtask> subtasks = new ArrayList<>();
 
     public Assignment() {
@@ -20,12 +23,12 @@ public class Assignment {
     }
 
     public Assignment(String title, String courseName, String dueDate,
-                      int assignmentUrgency, int estimatedTime) {
+                      Integer urgency, Integer estimatedTime) {
         this.title = title;
         this.courseName = courseName;
         this.dueDate = dueDate;
         this.completed = false;
-        this.assignmentUrgency = assignmentUrgency;
+        this.urgency = urgency;
         this.estimatedTime = estimatedTime;
     }
 
@@ -69,19 +72,19 @@ public class Assignment {
         this.completed = completed;
     }
 
-    public int getAssignmentUrgency() {
-        return assignmentUrgency;
+    public Integer getUrgency() {
+        return urgency;
     }
 
-    public void setAssignmentUrgency(int assignmentUrgency) {
-        this.assignmentUrgency = assignmentUrgency;
+    public void setUrgency(Integer urgency) {
+        this.urgency = urgency;
     }
 
-    public int getEstimatedTime() {
+    public Integer getEstimatedTime() {
         return estimatedTime;
     }
 
-    public void setEstimatedTime(int estimatedTime) {
+    public void setEstimatedTime(Integer estimatedTime) {
         this.estimatedTime = estimatedTime;
     }
 
