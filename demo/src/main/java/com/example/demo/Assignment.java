@@ -20,13 +20,14 @@ public class Assignment {
     }
 
     public Assignment(String title, String courseName, String dueDate,
-                      int assignmentUrgency, int estimatedTime) {
+                      int assignmentUrgency, int estimatedTime, List<Subtask> subtasks) {
         this.title = title;
         this.courseName = courseName;
         this.dueDate = dueDate;
         this.completed = false;
         this.assignmentUrgency = assignmentUrgency;
         this.estimatedTime = estimatedTime;
+        this.subtasks = subtasks != null ? subtasks : new ArrayList<>();
     }
 
     public String getId() {
